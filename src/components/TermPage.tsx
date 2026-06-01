@@ -2,6 +2,7 @@ import { useState } from "react";
 import CourseList from "./CourseList";
 import TermSelector, { type Term } from "./TermSelector";
 import Modal from "./Modal";
+import { hasConflict } from "../utilities/timeconflict";
 
 type Course = {
   term: string;
@@ -25,6 +26,10 @@ const TermPage = ({ courses }: { courses: Courses }) => {
     }
   };
 
+  const conflicts = (id: string) =>
+    !selected.includes(id) &&
+    selected.some(sid => hasConflict(courses[id], courses[sid]));
+
   const filteredCourses = Object.fromEntries(
     Object.entries(courses).filter(([, course]) => course.term === selectedTerm)
   );
@@ -41,7 +46,12 @@ const TermPage = ({ courses }: { courses: Courses }) => {
         </button>
       </div>
 
-      <CourseList courses={filteredCourses} selected={selected} toggle={toggle} />
+      <CourseList
+        courses={filteredCourses}
+        selected={selected}
+        toggle={toggle}
+        conflicts={conflicts}
+      />
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <h2 className="text-lg font-semibold mb-3">Your course plan</h2>
