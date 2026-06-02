@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
@@ -49,6 +50,14 @@ const CourseList = ({ courses, selected, toggle, conflicts }: CourseListProps) =
               <p className="text-sm text-muted-foreground">{course.meets}</p>
               {isSelected && <span>✓ Selected</span>}
               {disabled && <span>✕ Conflict</span>}
+              <Link
+                to="/courses/$id/edit"
+                params={{ id }}
+                onClick={(e) => e.stopPropagation()}
+                className="block mt-2 text-sm text-blue-600 underline"
+              >
+                Edit
+              </Link>
             </CardContent>
           </Card>
         );
