@@ -16,7 +16,7 @@ const EditPage = () => {
   const course = courses[id];
   if (!course) return <div>No course with id {id}.</div>;
 
-  return <CourseForm course={course} />;
+  return <CourseForm id={id} course={course} />;
 };
 
 export const Route = createFileRoute("/courses/$id/edit")({

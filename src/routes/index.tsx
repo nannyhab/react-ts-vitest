@@ -1,11 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useJsonQuery } from "../utilities/fetch";
+import { useDataQuery } from "../utilities/firebase";
 import TermPage from "../components/TermPage";
 
-const URL = "https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php";
-
 const HomePage = () => {
-  const [json, loading, error] = useJsonQuery(URL);
+  const [json, loading, error] = useDataQuery("/");
 
   if (error) return <div>Error: {`${error}`}</div>;
   if (loading) return <div>Loading...</div>;
