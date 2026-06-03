@@ -6,14 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAuthState } from "@/utilities/firebase";
 
-type Course = {
-  term: string;
-  number: string;
-  meets: string;
-  title: string;
-};
-
+type Course = { term: string; number: string; meets: string; title: string };
 type Courses = Record<string, Course>;
 
 type CourseListProps = {
@@ -24,6 +19,8 @@ type CourseListProps = {
 };
 
 const CourseList = ({ courses, selected, toggle, conflicts }: CourseListProps) => {
+  const user = useAuthState();
+
   return (
     <div className="flex flex-row flex-wrap gap-4 mt-6 w-full justify-center">
       {Object.entries(courses).map(([id, course]) => {
@@ -50,14 +47,16 @@ const CourseList = ({ courses, selected, toggle, conflicts }: CourseListProps) =
               <p className="text-sm text-muted-foreground">{course.meets}</p>
               {isSelected && <span>✓ Selected</span>}
               {disabled && <span>✕ Conflict</span>}
-              <Link
-                to="/courses/$id/edit"
-                params={{ id }}
-                onClick={(e) => e.stopPropagation()}
-                className="block mt-2 text-sm text-blue-600 underline"
-              >
-                Edit
-              </Link>
+              {user && (
+                <Link
+                  to="/courses/$id/edit"
+                  params={{ id }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="block mt-2 text-sm text-blue-600 underline"
+                >
+                  Edit
+                </Link>
+              )}
             </CardContent>
           </Card>
         );
