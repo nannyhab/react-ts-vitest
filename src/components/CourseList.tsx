@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAuthState } from "@/utilities/firebase";
+import { useProfile } from "@/utilities/profile";
 
 type Course = { term: string; number: string; meets: string; title: string };
 type Courses = Record<string, Course>;
@@ -19,7 +19,7 @@ type CourseListProps = {
 };
 
 const CourseList = ({ courses, selected, toggle, conflicts }: CourseListProps) => {
-  const user = useAuthState();
+  const [profile] = useProfile();
 
   return (
     <div className="flex flex-row flex-wrap gap-4 mt-6 w-full justify-center">
@@ -47,7 +47,7 @@ const CourseList = ({ courses, selected, toggle, conflicts }: CourseListProps) =
               <p className="text-sm text-muted-foreground">{course.meets}</p>
               {isSelected && <span>✓ Selected</span>}
               {disabled && <span>✕ Conflict</span>}
-              {user && (
+              {Boolean(profile.isAdmin) && (
                 <Link
                   to="/courses/$id/edit"
                   params={{ id }}
